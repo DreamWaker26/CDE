@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField
@@ -56,6 +56,12 @@ def index():
 
 	return render_template('index.html', posts=posts)
 
+@app.route('/index_in')
+def index_in():
+    posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
+
+    return render_template('index_in.html', posts=posts)
+
 @app.route("/<path:filename>")
 def template(filename):
 	return render_template(filename)
@@ -69,7 +75,8 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
-                return redirect(url_for('dashboard'))
+                session['name'] = form.username.data
+                return redirect(url_for('index_in'))
 
         return '<h1>Invalid username or password</h1>'
         #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
@@ -100,6 +107,7 @@ def dashboard():
 @login_required
 def logout():
     logout_user()
+    session.pop('name', None)
     return redirect(url_for('index'))
 
 #content
@@ -162,4 +170,6 @@ def addpost():
 #debug
 
 if __name__ == '__main__':
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(debug=True)
