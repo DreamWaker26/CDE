@@ -26,28 +26,7 @@
   <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-      <div class="container">
-        <a class="navbar-brand" href="{{ url_for('index') }}">Start Bootstrap</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
-          <i class="fa fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('index') }}">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('about') }}">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('add') }}">Add</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+     {% include 'nav.html' %}
 
     <!-- Page Header -->
     <header class="masthead" style="background-image: url('{{ url_for('static', filename='contact-bg.jpg') }}')">
@@ -67,39 +46,39 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <form name="addForm" id="addForm" method="POST" enctype=multipart/form-data action="{{ url_for('addpost') }}" novalidate>
+          <form name="addForm" id="addForm" method="POST" enctype=multipart/form-data action="/addpost">
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Title</label>
-                <input type="text" class="form-control" placeholder="Title" name="title" id="title" required data-validation-required-message="Please enter a title.">
+                <input type="text" class="form-control" placeholder="Title" name="title" id="title" required="required" data-validation-required-message="Please enter a title.">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Keyword</label>
-                <input type="text" class="form-control" placeholder="Keyword" name="keyword" id="keyword" required data-validation-required-message="Please enter your keyword.">
+                <input type="text" class="form-control" placeholder="Keyword" name="keyword" id="keyword" required="required" data-validation-required-message="Please enter your keyword.">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
             <div class="control-group">
               <div class="form-group col-xs-12 floating-label-form-group controls">
                 <label>Author</label>
-                <input type="text" class="form-control" placeholder="Author" name="author" id="author" required data-validation-required-message="Please enter your Name.">
+                <input type="text" class="form-control" placeholder="Author" name="author" id="author" required="required" data-validation-required-message="Please enter your Name.">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Blog Content</label>
-                <textarea rows="5" class="form-control" placeholder="Blog content" name="content" id="content" required data-validation-required-message="Please enter a message."></textarea>
+                <textarea rows="5" class="form-control" placeholder="Blog content" name="content" id="content" required="required" data-validation-required-message="Please enter a message."></textarea>
                 <p class="help-block text-danger"></p>
               </div>
             </div>
              <div class="control-group">
               <div class="form-group col-xs-12 floating-label-form-group controls">
                 <label>Picture</label>
-                <input type="file" class="form-control" placeholder="Picture" name="picture" id="picture" required data-validation-required-message="Please upload your picture.">
+                <input type="file" class="form-control" placeholder="Picture" name="picture" id="picture" >
                 <p class="help-block text-danger"></p>
               </div>
             </div>
