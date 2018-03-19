@@ -10,12 +10,12 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
-UPLOAD_FOLDER = '/home/duncan/Downloads/CDE/static/img'
+UPLOAD_FOLDER = '/home/duncan/CDE/static/img'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'T0P_ScRet'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/duncan/Downloads/CDE/picbook.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/duncan/CDE/picbook.db'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)

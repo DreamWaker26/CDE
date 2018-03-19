@@ -1,6 +1,11 @@
 {% extends "BASE.html" %}
 
-  
+
+    {% block styles %}
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='image.css') }}">
+    {% endblock %}
+        
     {% block header %}
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
@@ -49,8 +54,10 @@
 
     {% block content %}
     <!-- Main Content -->
+    
     <div class="container">
       <div class="row">
+        <!--
         <div class="col-lg-8 col-md-10 mx-auto">
         {% for post in posts %}
           <div class="post-preview">
@@ -62,11 +69,29 @@
                 {{ post.subtitle }}
               </h3>
             </a>
+            <img src="{{ url_for('static', filename='img/test.jpeg') }}">
             <p class="post-meta">Posted by {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }}</p>
           </div>
           {% endfor %}
           <hr>
+
         </div>
+        //-->
+        
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+          {% for post in posts %}
+            <div class="hovereffect">
+              <img class="img-responsive" src="{{ url_for('static', filename='img/test.jpeg') }}" alt="">
+                <div class="overlay">
+                  <h2>{{ post.title }}</h2>
+                    <p>
+                       <a href="#">{{ post.author }}</a>
+                    </p>
+                </div>
+              </div>
+          {% endfor %}    
+        </div>
+        
       </div>
     </div>
 
