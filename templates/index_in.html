@@ -63,7 +63,7 @@
                 <img class="img-responsive" src="{{ url_for('static', filename="img/" + post.picture) }}" alt="">
               <div class="overlay">
                 <h2><strong>{{ post.title }}</strong><br><small>{{ post.author }}</small></h2>
-                <p><a style="text-decoration: none;" href="#">{{ post.content }}</a></p>             
+                <p><a style="text-decoration: none;" href="{{ url_for('static', filename="img/">{{ post.content }}</a></p>             
               </div>
             </div>   
           </div>
