@@ -20,11 +20,12 @@
               <a class="nav-link" href="{{ url_for('index') }}">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('about') }}">About</a>
+              <a class="nav-link" href="/add.html">Add</a>
             </li>
             <!--
+            
             <li class="nav-item">
-              <a class="nav-link" href="/add.html">Add</a>
+              <a class="nav-link" href="{{ url_for('about') }}">About</a>
             </li>
             //-->
             <li class="nav-item">
@@ -36,10 +37,11 @@
     </nav>
 
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('{{ url_for('static', filename='home-bg.jpg') }}')">
+    <header class="masthead" style="background-image: url('{{ url_for('static', filename='bgpaper.jpg') }}')">
       <div class="container">
+
         <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="col-lg-8 col-md-10 mx-auto portfolio-item">
             <div class="site-heading">
               <h1>Welcome, {{ session["name"] }} </h1>
               <span class="subheading">It's good to see you.</span>
@@ -56,46 +58,31 @@
     <!-- Main Content -->
     
     <div class="container">
+      
       <div class="row">
-        <!--
-        <div class="col-lg-8 col-md-10 mx-auto">
-        {% for post in posts %}
-          <div class="post-preview">
-            <a href="{{ url_for('post', post_id=post.id) }}">
-              <h2 class="post-title">
-                {{ post.title }}
-              </h2>
-              <h3 class="post-subtitle">
-                {{ post.subtitle }}
-              </h3>
-            </a>
-            <img src="{{ url_for('static', filename='img/test.jpeg') }}">
-            <p class="post-meta">Posted by {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }}</p>
-          </div>
-          {% endfor %}
-          <hr>
-
-        </div>
-        //-->
         
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-          {% for post in posts %}
-            <div class="hovereffect">
-              <img class="img-responsive" src="{{ url_for('static', filename='img/test.jpeg') }}" alt="">
-                <div class="overlay">
-                  <h2>{{ post.title }}</h2>
-                    <p>
-                       <a href="#">{{ post.author }}</a>
-                    </p>
-                </div>
+        {% for post in posts %}  
+        
+        <div class="col-lg-4 col-sm-6  ">
+               
+              <div class="hovereffect">
+              <img class="img-responsive" src="{{ url_for('static', filename="img/" + post.picture) }}" alt="">
+              <div class="overlay">
+                      <h2>{{ post.title }}<br>{{ post.author }}</h2>
+              <p>
+                <a href="#">{{ post.content }}</a>
+              </p>
+              
               </div>
-          {% endfor %}    
+              </div>   
+                         
         </div>
-        
+        {% endfor %}
+      
       </div>
     </div>
 
-    <hr>
+    
     {% endblock %}
    
    
