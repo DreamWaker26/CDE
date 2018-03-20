@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, flash, render_template, request, redirect, url_for, session
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField
@@ -14,7 +14,7 @@ UPLOAD_FOLDER = '/home/duncan/CDE/static/img'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'T0P_ScRet'
+app.config['SECRET_KEY'] = 'T0P_S3cRet'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/duncan/CDE/picbook.db'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 bootstrap = Bootstrap(app)
@@ -52,13 +52,13 @@ class RegisterForm(FlaskForm):
 
 @app.route('/')
 def index():
-	posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
+	posts = pic.query.order_by(pic.date_posted.desc()).all()
 
 	return render_template('index.html', posts=posts)
 
 @app.route('/index_in')
 def index_in():
-    posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
+    posts = pic.query.order_by(pic.date_posted.desc()).all()
 
     return render_template('index_in.html', posts=posts)
 
@@ -69,6 +69,7 @@ def template(filename):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    error = None
 
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -77,8 +78,12 @@ def login():
                 login_user(user, remember=form.remember.data)
                 session['name'] = form.username.data
                 return redirect(url_for('index_in'))
-
-        return '<h1>Invalid username or password</h1>'
+            else:
+                error = 'Invalid password'
+            return render_template('login.html', error=error, form=form)
+        else:
+            error = 'Invalid username/password'
+        return render_template('login.html', error=error, form=form)
         #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
 
     return render_template('login.html', form=form)
@@ -86,14 +91,16 @@ def login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = RegisterForm()
+    notice = None
 
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data, method='sha256')
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
+        notice = 'New user has been created'
 
-        return '<h1>New user has been created!</h1>'
+        return render_template('signup.html', form=form, notice=notice)
         #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
 
     return render_template('signup.html', form=form)
@@ -111,7 +118,7 @@ def logout():
     return redirect(url_for('index'))
 
 #content
-class Blogpost(db.Model):
+class pic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
     keyword = db.Column(db.String(50))
@@ -119,28 +126,21 @@ class Blogpost(db.Model):
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)
     picture = db.Column(db.Text(50))
-"""
-@app.route('/')
-def index():
-    posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
 
-    return render_template('index.html', posts=posts)
-"""
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+@app.route('/add')
+@login_required
+def add():
+    return render_template('add.html')
 
 @app.route('/post/<int:post_id>')
 def post(post_id):
-    post = Blogpost.query.filter_by(id=post_id).one()
+    post = pic.query.filter_by(id=post_id).one()
 
     return render_template('post.html', post=post)
 
-
-
-
 @app.route('/addpost', methods=['POST'])
+@login_required
 def addpost():
 
 	if request.method == "POST":
@@ -156,20 +156,16 @@ def addpost():
 	            filename = picture.filename
 	            picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-	    post = Blogpost(title=title, picture=picture.filename, keyword=keyword, author=author, content=content, date_posted=datetime.now())
+	    post = pic(title=title, picture=picture.filename, keyword=keyword, author=author, content=content, date_posted=datetime.now())
 		
 	    db.session.add(post)
 	    db.session.commit()
 		
 	    return redirect(request.referrer)
 
-
-
-
-
 #debug
 
 if __name__ == '__main__':
     app.jinja_env.auto_reload = True
     app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.run(debug=True)
+    app.run("0.0.0.0", 8080, debug=True)
