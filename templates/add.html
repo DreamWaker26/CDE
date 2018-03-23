@@ -1,7 +1,8 @@
+<!-- BASE template  -->
 {% extends "BASE.html" %}
-
+    <!-- add page header -->
     {% block header %}
-
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
         <a class="navbar-brand" href="{{ url_for('index') }}">PicBook</a>
@@ -22,7 +23,7 @@
         </div>
       </div>
     </nav>
-    <!-- Page Header -->
+    <!-- add page header -->
     <header class="masthead" style="background-image: url('{{ url_for('static', filename='DSC08840.jpg') }}')">
       <div class="container">
         <div class="row">
@@ -36,9 +37,9 @@
       </div>
     </header>
     {% endblock %}
-
+    <!-- add page content -->
     {% block content %}
-    <!-- Main Content -->
+    <!-- add piture form -->
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">

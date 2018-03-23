@@ -1,14 +1,15 @@
+<!-- BASE template -->
 {% extends "BASE.html" %}
-
+  <!-- logged-in page style -->
   {% block styles %}
 
   {{super()}}
   <link rel="stylesheet" href="{{ url_for('static', filename='image.css') }}">
 
   {% endblock %}
-        
+  <!-- logged-in page header -->      
   {% block header %}
-
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
         <a class="navbar-brand" href="{{ url_for('index') }}">PicBook</a>
@@ -33,7 +34,7 @@
       </div>
     </nav>
 
-    <!-- Page Header -->
+    <!-- logged-in page Header -->
     <header class="masthead" style="background-image: url('{{ url_for('static', filename='bgpaper.jpg') }}')">
       <div class="container">
         <div class="row">
@@ -49,13 +50,13 @@
 
   {% endblock %}
 
-
+  <!-- logged-in page content -->
   {% block content %}
-    <!-- Main Content -->
+    <!-- picture gallery -->
     
     <div class="container">     
       <div class="row">   
-
+        <!-- Forloop for display all pic from database-->
         {% for post in posts %}    
 
           <div class="ccol-lg-3 col-md-4 col-sm-6 col-xs-12" id="pic">               
@@ -63,7 +64,7 @@
                 <img class="img-responsive" src="{{ url_for('static', filename="img/" + post.picture) }}" alt="">
               <div class="overlay">
                 <h2><strong>{{ post.title }}</strong><br><small>{{ post.author }}</small></h2>
-                p><a href="{{ url_for('static', filename="img/" + post.picture) }}" alt="lol">{{ post.content }}</a></p>             
+                <p><a href="{{ url_for('static', filename="img/" + post.picture) }}" alt="lol">{{ post.content }}</a></p>             
               </div>
             </div>   
           </div>

@@ -26,9 +26,7 @@ login_manager.login_view = 'login'
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-#Login Page
-
+#user information database
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
@@ -39,6 +37,7 @@ class User(UserMixin, db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+#define form item
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
@@ -50,22 +49,22 @@ class RegisterForm(FlaskForm):
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
 
 
+@app.route("/<path:filename>")
+def template(filename):
+    return render_template(filename)
+#index page 
 @app.route('/')
 def index():
 	posts = pic.query.order_by(pic.date_posted.desc()).all()
 
 	return render_template('index.html', posts=posts)
-
+#looged-in index page
 @app.route('/index_in')
 def index_in():
     posts = pic.query.order_by(pic.date_posted.desc()).all()
 
     return render_template('index_in.html', posts=posts)
-
-@app.route("/<path:filename>")
-def template(filename):
-	return render_template(filename)
-
+#login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -84,10 +83,10 @@ def login():
         else:
             error = 'Invalid username/password'
         return render_template('login.html', error=error, form=form)
-        #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
+        #show error message 
 
     return render_template('login.html', form=form)
-
+#sign up page
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = RegisterForm()
@@ -104,12 +103,7 @@ def signup():
         #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
 
     return render_template('signup.html', form=form)
-
-@app.route('/dashboard')
-@login_required
-def dashboard():
-    return render_template('dashboard.html', name=current_user.username)
-
+ #logput    
 @app.route('/logout')
 @login_required
 def logout():
@@ -117,7 +111,7 @@ def logout():
     session.pop('name', None)
     return redirect(url_for('index'))
 
-#content
+#picture database
 class pic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
@@ -127,18 +121,18 @@ class pic(db.Model):
     content = db.Column(db.Text)
     picture = db.Column(db.Text(50))
 
-
+#add picture page
 @app.route('/add')
 @login_required
 def add():
     return render_template('add.html')
-
+#show picture
 @app.route('/post/<int:post_id>')
 def post(post_id):
     post = pic.query.filter_by(id=post_id).one()
 
     return render_template('post.html', post=post)
-
+#upload function
 @app.route('/addpost', methods=['POST'])
 @login_required
 def addpost():
@@ -163,8 +157,7 @@ def addpost():
 		
 	    return redirect(request.referrer)
 
-#debug
-
+#debug & redirect port to 8080
 if __name__ == '__main__':
     app.jinja_env.auto_reload = True
     app.config['TEMPLATES_AUTO_RELOAD'] = True

@@ -1,14 +1,15 @@
+<!-- BASE Template -->
 {% extends "BASE.html" %}
-
+  <!-- Index page styles -->
   {% block styles %}
 
     {{super()}}
     <link rel="stylesheet" href="{{ url_for('static', filename='image.css') }}">
 
   {% endblock %}
-
+  <!-- Index page header -->
   {% block header %}
-
+    <!-- Navigation Bar  -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
         <a class="navbar-brand" href="{{ url_for('index') }}">PicBook</a>
@@ -31,7 +32,7 @@
         </div>
       </div>
     </nav>
-    <!-- Page Header -->
+    <!-- Index Page Header -->
     <header class="masthead" style="background-image: url('{{ url_for('static', filename='DSC06774.jpg') }}')">
       <div class="container">
         <div class="row">
@@ -46,13 +47,13 @@
     </header>
 
   {% endblock %}
-
+  <!-- index page content -->
   {% block content %}
 
-    <!-- Main Content -->
+    <!-- Picture Gallery -->
     <div class="container">   
       <div class="row">
-        
+        <!-- Forloop for display all pic from database-->
         {% for post in posts %}  
         
           <div class="col-lg-4 col-sm-6" id="pic" >   
